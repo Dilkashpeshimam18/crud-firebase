@@ -3,13 +3,17 @@ import { db } from '../../firebase/firebase'
 import { addDoc, updateDoc, deleteDoc, collection, getDocs, doc } from 'firebase/firestore'
 
 const Hobbies = () => {
+    const [hobbie, setHobbie] = useState('')
     const [hobbies, setHobbies] = useState([])
     const hobbiesCollectionRef = collection(db, 'hobbies')
     const createHobbie = async () => {
         try {
             await addDoc(hobbiesCollectionRef, {
-                hobbie: hobbies
+                hobbie: hobbie
             })
+
+            getAllHobbies()
+
 
         } catch (err) {
             console.log(err)
@@ -24,7 +28,6 @@ const Hobbies = () => {
                 ...doc.data(),
                 id: doc.id
             }))
-            console.log(result)
             setHobbies(result)
 
         } catch (err) {
@@ -34,21 +37,43 @@ const Hobbies = () => {
 
     }
 
+    const updateHobbie = async (id) => {
+        try {
+            const hobbieDoc = doc(db, 'hobbies', id)
+
+
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
+    const deleteHobbie = async (id) => {
+        try {
+            const hobbieDoc = doc(db, 'hobbies', id)
+            await deleteDoc(hobbieDoc)
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
 
     useEffect(() => {
         getAllHobbies()
-
     }, [])
     return (
         <div>
-            <input onChange={(e) => setHobbies(e.target.value)} placeholder='Enter your hobbie' />
+            <input value={hobbie} onChange={(e) => setHobbie(e.target.value)} placeholder='Enter your hobbie' />
             <button onClick={createHobbie}>Enter</button>
-            {hobbies.map((hobbie) => {
+            {hobbies && hobbies?.map((hobbie, index) => {
                 return (
-                    <div>
+                    <div key={index}>
                         <h3>Hobbie: {hobbie.hobbie}</h3>
-                        <button>Update Hobbie</button>
-                        <button>Delete Hobbie</button>
+                        <button onClick={() => updateHobbie(hobbie.id)}>Update Hobbie</button>
+                        <button onClick={() => deleteHobbie(hobbie.id)}>Delete Hobbie</button>
                     </div>
                 )
             })}
