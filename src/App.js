@@ -3,6 +3,8 @@ import './App.css';
 import Users from './components/users/Users';
 import { Routes, Route } from 'react-router-dom'
 import Hobbies from './components/hobbies/Hobbies';
+import Auth from './components/authentication/Auth';
+
 
 function App() {
 
@@ -12,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Users />} />
         <Route path='/hobbies' element={<Hobbies />} />
+        <Route path='/auth' element={<Auth />} />
       </Routes>
 
 

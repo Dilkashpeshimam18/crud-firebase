@@ -5,12 +5,20 @@ import { addDoc, updateDoc, deleteDoc, collection, getDocs, doc } from 'firebase
 const Hobbies = () => {
     const [hobbie, setHobbie] = useState('')
     const [hobbies, setHobbies] = useState([])
+    const [isUpdated, setIsUpdated] = useState(false)
     const hobbiesCollectionRef = collection(db, 'hobbies')
+
     const createHobbie = async () => {
         try {
-            await addDoc(hobbiesCollectionRef, {
-                hobbie: hobbie
-            })
+            if (isUpdated == true) {
+
+
+            } else {
+                await addDoc(hobbiesCollectionRef, {
+                    hobbie: hobbie
+                })
+            }
+
 
             getAllHobbies()
 
@@ -37,17 +45,7 @@ const Hobbies = () => {
 
     }
 
-    const updateHobbie = async (id) => {
-        try {
-            const hobbieDoc = doc(db, 'hobbies', id)
 
-
-
-        } catch (err) {
-            console.log(err)
-        }
-
-    }
 
     const deleteHobbie = async (id) => {
         try {
@@ -63,6 +61,7 @@ const Hobbies = () => {
 
     useEffect(() => {
         getAllHobbies()
+        console.log(hobbies)
     }, [])
     return (
         <div>
@@ -72,7 +71,9 @@ const Hobbies = () => {
                 return (
                     <div key={index}>
                         <h3>Hobbie: {hobbie.hobbie}</h3>
-                        <button onClick={() => updateHobbie(hobbie.id)}>Update Hobbie</button>
+                        <button onClick={() => {
+                            setIsUpdated(true)
+                        }}>Update Hobbie</button>
                         <button onClick={() => deleteHobbie(hobbie.id)}>Delete Hobbie</button>
                     </div>
                 )
